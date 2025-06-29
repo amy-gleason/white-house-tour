@@ -154,32 +154,31 @@
 
         const allSections = {
             home: [
-                {
-                    icon: "🏛️",
-                    title: "WHITE HOUSE TOUR GUIDE",
-                    content: `
-                        <div style="text-align: center; padding: 20px 0;">
-                            <div style="font-size: 3.5rem; margin-bottom: 20px;">🏛️</div>
-                            <h2 style="color: #1e3c72; margin-bottom: 25px; font-size: 1.6rem;">Choose Your Tour</h2>
-                            <p style="color: #6c757d; margin-bottom: 35px; line-height: 1.5;">Select which White House tour you'd like to guide today.</p>
-                            
-                            <div style="display: flex; flex-direction: column; gap: 18px; max-width: 280px; margin: 0 auto;">
-                                <button onclick="loadTour('westwing')" style="
-                                    background: linear-gradient(135deg, #c41e3a 0%, #8b1538 100%);
-                                    color: white; border: none; padding: 18px; border-radius: 12px;
-                                    font-size: 1rem; font-weight: 600; cursor: pointer;
-                                ">🏛️ West Wing Tour</button>
-                                
-                                <button onclick="loadTour('eisenhower')" style="
-                                    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-                                    color: white; border: none; padding: 18px; border-radius: 12px;
-                                    font-size: 1rem; font-weight: 600; cursor: pointer;
-                                ">🏢 Eisenhower Building Tour</button>
-                            </div>
-                        </div>
-                    `
-                }
-            ],
+    {
+        icon: "🏛️",
+        title: "WHITE HOUSE UNOFFICIAL TOUR GUIDE",
+        content: `
+            <div style="text-align: center; padding: 20px 0;">
+                <h2 style="color: #1e3c72; margin-bottom: 25px; font-size: 1.6rem;">Choose Your Tour</h2>
+                <p style="color: #6c757d; margin-bottom: 35px; line-height: 1.5;">Select which White House tour you'd like to guide today.</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 18px; max-width: 280px; margin: 0 auto;">
+                    <button onclick="loadTour('westwing')" style="
+                        background: linear-gradient(135deg, #c41e3a 0%, #8b1538 100%);
+                        color: white; border: none; padding: 18px; border-radius: 12px;
+                        font-size: 1rem; font-weight: 600; cursor: pointer;
+                    ">🏛️ West Wing Tour</button>
+                    
+                    <button onclick="loadTour('eisenhower')" style="
+                        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+                        color: white; border: none; padding: 18px; border-radius: 12px;
+                        font-size: 1rem; font-weight: 600; cursor: pointer;
+                    ">🏢 Eisenhower Building Tour</button>
+                </div>
+            </div>
+        `
+    }
+],
             westwing: [
                 { icon: "🔰", title: "ARRIVAL & SECURITY PROCESS", content: `<div class="talking-points"><h3>What to Say:</h3><ul><li>"You'll check in at the first gate at 17th & State."</li><li>"You'll need to show a REAL ID or passport."</li><li>"They might also ask for the last four digits of your Social Security Number or your birthdate — especially for children."</li><li>"You'll need your ID again at the second security gate so keep it handy."</li></ul></div><div class="wayfinding"><h4>🗺️ Wayfinding:</h4><p>➡️ Walk straight to the second security booth on West Executive Drive, then continue toward the employee entrance to the West Wing.</p></div>` },
                 { icon: "🏛️", title: "FIRST DIVISION MONUMENT", content: `<div class="talking-points"><h3>What to Say:</h3><ul><li>To the right as you come through the first check in gate is the First Division Monument that was meant to honor the World War 1 brave soldiers.</li><li>It has a winged victory statue on top of the column and flowers are planted next to it in the shape of a 1 to represent the first division.</li><li>It was placed there to balance the Sherman statue on the other side of the treasury</li><li>It was the first monument to honor the troops. Other monuments have followed for Korean War, Vietnam war, World War II and a newer World War I monument off 15th.</li></ul></div>` },
