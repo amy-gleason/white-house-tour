@@ -1,4 +1,279 @@
-<script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White House Tour Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px 15px;
+            color: #333;
+        }
+
+        .app-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            min-height: calc(100vh - 40px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b1538 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 4px;
+            margin-top: 15px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: white;
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .content {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .section-icon {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .talking-points {
+            margin-bottom: 20px;
+        }
+
+        .talking-points h3 {
+            color: #c41e3a;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .talking-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .talking-points li {
+            background: #f8f9fa;
+            margin: 8px 0;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #c41e3a;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .wayfinding {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .wayfinding h4 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .wayfinding h4::before {
+            content: "🗺️";
+            margin-right: 8px;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 15px;
+            padding: 20px 25px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .nav-button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .prev-button {
+            background: #6c757d;
+            color: white;
+        }
+
+        .prev-button:hover:not(:disabled) {
+            background: #5a6268;
+            transform: translateY(-1px);
+        }
+
+        .next-button {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b1538 100%);
+            color: white;
+        }
+
+        .next-button:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(196, 30, 58, 0.3);
+        }
+
+        .section-counter {
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .tips {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: #000;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .tips h4 {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .tips h4::before {
+            content: "💡";
+            margin-right: 8px;
+        }
+
+        .page-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .section-pages {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .page-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #dee2e6;
+            transition: background 0.2s ease;
+        }
+
+        .page-dot.active {
+            background: #c41e3a;
+        }
+
+        .important-note {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .important-note h4 {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .important-note h4::before {
+            content: "🔴";
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <h1>🏛️ White House Tour Guide</h1>
+            <p class="subtitle">Professional Tour Assistant</p>
+            <div class="page-indicator" id="pageIndicator">1 / 1</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Content will be dynamically loaded here -->
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button prev-button" id="prevBtn" onclick="previousSection()">← Previous</button>
+            <button class="nav-button next-button" id="nextBtn" onclick="nextSection()">Next →</button>
+        </div>
+    </div>
+
+    <script>
         let currentSectionIndex = 0;
         let currentPageIndex = 0;
         let currentTour = 'home'; // 'home', 'westwing', 'eisenhower'
@@ -51,4 +326,946 @@
             ]
         };
 
-        const westWingTourSections = [Add home page and Eisenhower Building tour"
+        const westWingTourSections = [
+            {
+                icon: "🔰",
+                title: "ARRIVAL & SECURITY PROCESS",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"You'll check in at the first gate at 17th & State."</li>
+                                    <li>"You'll need to show a REAL ID or passport."</li>
+                                    <li>"They might also ask for the last four digits of your Social Security Number or your birthdate — especially for children."</li>
+                                    <li>"You'll need your ID again at the second security gate so keep it handy."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Walk straight to the second security booth on West Executive Drive, then continue toward the employee entrance to the West Wing. ➡️ On your walk, point out the surroundings and share historical facts about the Eisenhower Building.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🏛️",
+                title: "CABINET ROOM",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"This is where the President meets with the Cabinet. You have probably seen it recently on TV as the President has been televising the Cabinet meetings."</li>
+                                    <li>Ask, "Which chair do you think is the President's chair?" Answer - "The President's chair here and in other spaces in the West Wing is about two inches taller than the other chairs and is usually in the center of the table."</li>
+                                    <li>"Seating is arranged based on when each department was established — State, Treasury, Defense, etc. The Cabinet members over the oldest departments sit closest to the President."</li>
+                                    <li>"The Secretary of State's chair is positioned to the President's right, while the Secretary of Defense is on his left."</li>
+                                </ul>
+                            </div>
+                        `
+                    },
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say (continued):</h3>
+                                <ul>
+                                    <li>"The backs of the chairs have name plates that show who sits there. If someone has served in multiple cabinet roles, they will have multiple name plates (sometimes they are out of the room and plain-backed chairs are there)"</li>
+                                    <li>"Originally constructed in 1902 as a part of President Roosevelt's renovation, the room's current Georgian Style was designed in 1934."</li>
+                                    <li>"The mahogany center conference table was originally bought by President Richard Nixon."</li>
+                                    <li>"Cabinet chairs can be purchased at the end of the Cabinet member's term."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Continue forward and slightly left to enter the Oval Office.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🏛️",
+                title: "OVAL OFFICE",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say (Part 1):</h3>
+                                <ul>
+                                    <li>"This is the working office of the President."</li>
+                                    <li>"It was first made to be in the Oval shape by Taft in 1909. It was modeled after the Blue Room in the East Wing because Taft thought it would help with room flow."</li>
+                                    <li>"Presidents can customize pretty much all of the room — but three things are fixed: the American flag must be there, there must be a portrait of George Washington, and the desk must face away from the window to show that the leader of the free world isn't afraid to have his back to the window"</li>
+                                    <li>"The rest of the room from the carpet, curtains, paintings, furniture - pretty much everything else can be changed by the president. The rug in here is Reagan's rug."</li>
+                                </ul>
+                            </div>
+                        `
+                    },
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say (Part 2 - The Resolute Desk):</h3>
+                                <ul>
+                                    <li>"The Resolute Desk, used by eight presidents, was a gift from Queen Victoria in 1880. The HMS Resolute was a British naval ship that became icebound in the Arctic. American whalers discovered and salvaged the ship, and the U.S. restored and returned it to Britain as a gesture of goodwill. In appreciation, Queen Victoria had the desk made from its timbers and sent it to the United States."</li>
+                                    <li>"There's a nearly identical twin desk made from the same ship — it's in Buckingham Palace."</li>
+                                    <li>"JFK was the first to use it in the Oval Office in 1961 and most presidents have used it since then. Before it was in the Oval Office, it was used in other parts of the White House."</li>
+                                </ul>
+                            </div>
+                        `
+                    }
+                ]
+            }
+        ];
+
+        const eisenhowerTourSections = [
+            {
+                icon: "⚓",
+                title: "NAVY STEPS (OUTSIDE)",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"As we approach the Eisenhower Executive Office Building, you'll notice the giant staircase in front of us — these are called the Navy Steps."</li>
+                                    <li>"See the two big anchors at the top? That's a nod to this being the Navy side of the building."</li>
+                                    <li>"Originally, this whole place was called the SWAN Building — for State, War, and Navy."</li>
+                                    <li>"State is over to the right, War is on the other side, and we're standing on the Navy side."</li>
+                                </ul>
+                            </div>
+                            <div class="tips">
+                                <h4>Photo Tip:</h4>
+                                <p>📸 Walk up the steps but pause before going in — this is a great photo spot with the White House in the background!</p>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Walk up the steps and into the building.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🏛️",
+                title: "ENTRYWAY LOBBY",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"As you walk inside, look to your right. Every federal building has the official photos of the sitting President and Vice President — here you'll see President Trump and Vice President J.D. Vance."</li>
+                                    <li>"To your left, you'll see a cabinet full of challenge coins. These started in the military to show what unit or troop someone was part of."</li>
+                                    <li>"Over time, they've become more of a collector's item. The running joke is that if you're at a bar and someone asks to see your challenge coin and you don't have one, you have to buy the drinks!"</li>
+                                    <li>"This display has coins that have been given to President Trump since January 20th, and it's already full — new ones come in all the time."</li>
+                                </ul>
+                            </div>
+                            <div class="tips">
+                                <h4>Photo Tip:</h4>
+                                <p>📸 Great spots here include the presidential flag with the marble floors or the portraits themselves.</p>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ When you're ready, head down the hallway to the left and take the elevator up to the 4th floor.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "📚",
+                title: "INDIAN TREATY ROOM (4TH FLOOR)",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"This room is labeled 'Library,' but it's known as the Indian Treaty Room. It used to be the Navy Law Library."</li>
+                                    <li>"Nobody really knows why it's called the Indian Treaty Room — no treaty is believed to have been signed or stored here — but it's definitely one of the most beautiful rooms in the whole building."</li>
+                                    <li>"In fact, it was the most expensive room to decorate and build in the entire building."</li>
+                                    <li>"Let folks take in the ornate ceilings, the marble, and the great view of the White House out the windows."</li>
+                                    <li>"If the podium has a microphone set up, some guests like to step up and give a little speech for fun."</li>
+                                    <li>"Ceremonial events are often held in this room."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Exit the room, look up at the blue dome above, and look down at the spiral staircase. Guests can also go upstairs to get a closer look at the dome. Then head straight down the hallway toward the gold dome.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🏆",
+                title: "GOLD DOME & CONFERENCE ROOM",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"This is my favorite dome in the building — gold and shining."</li>
+                                    <li>"Right near here is a large conference room, just one example of where big meetings take place in this building."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ From here, turn right and take the elevator down to the 2nd floor.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "⚔️",
+                title: "SECRETARY OF WAR SUITE (2ND FLOOR)",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"We're now on the War Department side. This hallway leads to the Secretary of War suite, from rooms 236 to 226."</li>
+                                    <li>"These rooms are connected — sometimes one of the connecting doors is locked, but you can usually find a way to walk through the whole suite."</li>
+                                    <li>"This area was where all U.S. military operations were planned from 1871 to 1947. Think of it like the U.S. version of Churchill's war bunker."</li>
+                                    <li>"During times of conflict, men were locked in here to make critical decisions. There was only one bathroom and one shower for the whole suite."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Continue through the connected rooms from 236 to 226.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "📜",
+                title: "ROOM 236",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"Look for a xylographed (woodcut) copy of the U.S. Constitution on the wall — super rare."</li>
+                                    <li>"Check out John Adams' hat box — sometimes it's in the cabinet, sometimes above the archway."</li>
+                                    <li>"As you move through the rooms, admire the ornate ceilings, painted details, textured walls, and gorgeous floors."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Continue to Room 230B.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🪖",
+                title: "ROOM 230B",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"Memorabilia includes a World War I helmet, mess kits, a bugle from 1870, and a Civil War cannonball."</li>
+                                    <li>"The desk is original — with historic photos of what the room looked like during wartime."</li>
+                                    <li>"President Taft's portrait is here — he's the only person to serve in all three branches of government: Congress, President, Secretary of War, and Chief Justice."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Continue to Room 226.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🇺🇸",
+                title: "ROOM 226",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"More artifacts like flags with 38 and 48 stars, a period typewriter, and a Revolutionary War cannonball."</li>
+                                    <li>"The room looks a lot like 236 but has different-colored ceiling gems."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Exit Room 226 and turn right. As you walk, look up — there's another one of the building's domes here. And as you walk along the marble floors, keep an eye out for fossils in the stone!</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🌍",
+                title: "DIPLOMATIC RECEPTION ROOM",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say (Part 1):</h3>
+                                <ul>
+                                    <li>"This room was created as the first place foreign diplomats were welcomed when they came to the White House."</li>
+                                    <li>"It's part of the original State Department wing — and the first section of the building to open."</li>
+                                    <li>"Look around — the chandeliers, fireplaces, carpet — it all looks nearly identical to photos taken during World War I."</li>
+                                    <li>"The only modern things now are screens and printers."</li>
+                                    <li>"That globe in the room? It's very old and shows a world map that looks totally different than today's."</li>
+                                </ul>
+                            </div>
+                        `
+                    },
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say (Part 2 - Historical Moment):</h3>
+                                <ul>
+                                    <li>"And here's a powerful moment in history — this room and the adjacent offices were where World War II really began for the U.S."</li>
+                                    <li>"Japanese diplomats had come to negotiate, and we were trying to stay out of the war."</li>
+                                    <li>"We were given 15 to 30 minutes to respond to Japan's demands, and the U.S. decided to call their bluff."</li>
+                                    <li>"We didn't respond — and that's when Pearl Harbor was bombed."</li>
+                                    <li>"That fateful conversation happened within these very walls."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ From here, exit the room and go right into the Cordell Hull Room.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🦅",
+                title: "CORDELL HULL ROOM",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"You'll know it by the eagle above the door. Cordell Hull was the last Secretary of State to serve in this building — during World War II."</li>
+                                    <li>"Inside are old pictures of the Eisenhower Building when it was surrounded by horses, not security fences."</li>
+                                    <li>"There's a painting over the fireplace showing cars right up close to the building — I love that painting."</li>
+                                    <li>"Look at the 1943 map on the wall — you'll notice Australasia and Africa are quite different than they are now."</li>
+                                    <li>"Also take a look around the entry space — there are printing press images, eagle details everywhere, and beautiful ornate design."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ When you're ready, head straight ahead to the elevator and go down to the 1st floor.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🏛️",
+                title: "FIRST FLOOR DISPLAY & DOGE OFFICES",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"As you step out of the elevator, look to your left and ahead. You'll see a display about the Eisenhower Building's history and the original architectural plans."</li>
+                                    <li>"It highlights the architect and his vision."</li>
+                                    <li>"Turn right and look up — there's another dome in the corner of the building here."</li>
+                                    <li>"Then, as you round the corner, you'll see the Doge offices — rooms 183 to 189."</li>
+                                    <li>"Show guests your desk, the overflowing mail, and maybe offer some Hershey Kisses or M&Ms as a parting treat!"</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ When you're ready, exit left and walk into Room 180 — the Civil Rights Room.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "✊",
+                title: "CIVIL RIGHTS ROOM (ROOM 180)",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"This room honors the civil rights movement. In the first room, you'll find quotes and photos, including one of Martin Luther King Jr. visiting the West Wing."</li>
+                                    <li>"Head into the next room on the right and check out old photos of the White House — including one where the West Wing is on fire."</li>
+                                    <li>"Others show the old greenhouses and major renovations."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ This marks the end of the tour. Exit back toward the Navy Steps.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🚪",
+                title: "EXITING THE EEOB",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"As you walk down the Navy Steps, head left and go through the gate. Make sure everyone scans out and drops their badge in the slot."</li>
+                                    <li>"Point out the Blair House — it's where foreign diplomats stay."</li>
+                                    <li>"If the American flag is flying, no one is currently staying there."</li>
+                                    <li>"When a foreign diplomat is visiting, their country's flag is displayed."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>From here, you can:</h4>
+                                <p>• Turn left toward 17th Street<br>
+                                • Turn right to go past the front of the White House toward 15th Street<br>
+                                • Or go out to Lafayette Park and H Street</p>
+                            </div>
+                            <div class="tips">
+                                <h4>Tour Complete!</h4>
+                                <p>🎉 Thank you for guiding this tour of the Eisenhower Executive Office Building!</p>
+                            </div>
+                        `
+                    }
+                ]
+            }
+        ];
+
+        function startWestWingTour() {
+            currentTour = 'westwing';
+            currentSectionIndex = 0;
+            currentPageIndex = 0;
+            updateHeader();
+            loadContent();
+            updateNavigation();
+            updateProgress();
+        }
+
+        function startEisenhowerTour() {
+            currentTour = 'eisenhower';
+            currentSectionIndex = 0;
+            currentPageIndex = 0;
+            updateHeader();
+            loadContent();
+            updateNavigation();
+            updateProgress();
+        }
+
+        function goHome() {
+            currentTour = 'home';
+            currentSectionIndex = 0;
+            currentPageIndex = 0;
+            updateHeader();
+            loadContent();
+            updateNavigation();
+            updateProgress();
+        }
+
+        function getCurrentSections() {
+            if (currentTour === 'home') return [homeContent];
+            if (currentTour === 'westwing') return westWingTourSections;
+            if (currentTour === 'eisenhower') return eisenhowerTourSections;
+            return [];
+        }
+
+        function updateHeader() {
+            const header = document.querySelector('.header h1');
+            const subtitle = document.querySelector('.header .subtitle');
+            
+            if (currentTour === 'home') {
+                header.innerHTML = '🏛️ White House Tour Guide';
+                subtitle.textContent = 'Professional Tour Assistant';
+            } else if (currentTour === 'westwing') {
+                header.innerHTML = '🏛️ West Wing Tour';
+                subtitle.textContent = 'Professional Tour Guide';
+            } else if (currentTour === 'eisenhower') {
+                header.innerHTML = '🏢 Eisenhower Building Tour';
+                subtitle.textContent = 'Professional Tour Guide';
+            }
+        }
+
+        function loadContent() {
+            const sections = getCurrentSections();
+            if (sections.length === 0) return;
+            
+            const section = sections[currentSectionIndex];
+            const page = section.pages[currentPageIndex];
+            
+            const content = document.getElementById('content');
+            
+            let pageDots = '';
+            if (section.pages.length > 1) {
+                for (let i = 0; i < section.pages.length; i++) {
+                    pageDots += `<div class="page-dot ${i === currentPageIndex ? 'active' : ''}"></div>`;
+                }
+            }
+            
+            const homeButton = currentTour !== 'home' ? 
+                `<div style="text-align: center; margin-bottom: 20px;">
+                    <button onclick="goHome()" style="
+                        background: #6c757d;
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 8px;
+                        font-size: 0.9rem;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                    " onmouseover="this.style.background='#5a6268'" onmouseout="this.style.background='#6c757d'">
+                        ← Back to Home
+                    </button>
+                </div>` : '';
+            
+            content.innerHTML = `
+                ${homeButton}
+                <div class="section-counter">${currentSectionIndex + 1} of ${sections.length}</div>
+                <div class="section-pages">${pageDots}</div>
+                <div class="section-icon">${section.icon}</div>
+                <h2 class="section-title">${section.title}</h2>
+                ${page.content}
+            `;
+        }
+
+        function updateNavigation() {
+            const sections = getCurrentSections();
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (currentTour === 'home') {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+                return;
+            }
+            
+            prevBtn.style.display = 'block';
+            nextBtn.style.display = 'block';
+            
+            const section = sections[currentSectionIndex];
+            const isFirstPage = currentSectionIndex === 0 && currentPageIndex === 0;
+            const isLastPage = currentSectionIndex === sections.length - 1 && 
+                              currentPageIndex === section.pages.length - 1;
+            
+            prevBtn.disabled = isFirstPage;
+            nextBtn.disabled = isLastPage;
+        }
+
+        function updateProgress() {
+            const sections = getCurrentSections();
+            if (sections.length === 0) return;
+            
+            const section = sections[currentSectionIndex];
+            let totalPages = 0;
+            let currentPage = 0;
+            
+            for (let i = 0; i < sections.length; i++) {
+                if (i < currentSectionIndex) {
+                    currentPage += sections[i].pages.length;
+                } else if (i === currentSectionIndex) {
+                    currentPage += currentPageIndex + 1;
+                }
+                totalPages += sections[i].pages.length;
+            }
+            
+            const progressPercent = (currentPage / totalPages) * 100;
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+            document.getElementById('pageIndicator').textContent = `${currentPage} / ${totalPages}`;
+        }
+
+        function nextSection() {
+            const sections = getCurrentSections();
+            if (sections.length === 0) return;
+            
+            const section = sections[currentSectionIndex];
+            
+            if (currentPageIndex < section.pages.length - 1) {
+                currentPageIndex++;
+            } else if (currentSectionIndex < sections.length - 1) {
+                currentSectionIndex++;
+                currentPageIndex = 0;
+            }
+            
+            loadContent();
+            updateNavigation();
+            updateProgress();
+        }
+
+        function previousSection() {
+            const sections = getCurrentSections();
+            if (sections.length === 0) return;
+            
+            if (currentPageIndex > 0) {
+                currentPageIndex--;
+            } else if (currentSectionIndex > 0) {
+                currentSectionIndex--;
+                const prevSection = sections[currentSectionIndex];
+                currentPageIndex = prevSection.pages.length - 1;
+            }
+            
+            loadContent();
+            updateNavigation();
+            updateProgress();
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadContent();
+            updateNavigation();
+            updateProgress();
+        });
+    </script>
+</body>
+</html>️",
+                title: "FIRST DIVISION MONUMENT",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>To the right as you come through the first check in gate is the First Division Monument that was meant to honor the World War 1 brave soldiers.</li>
+                                    <li>It has a winged victory statue on top of the column and flowers are planted next to it in the shape of a 1 to represent the first division.</li>
+                                    <li>It was placed there to balance the Sherman statue on the other side of the treasury</li>
+                                    <li>It was the first monument to honor the troops. Other monuments have followed for Korean War, Vietnam war, World War II and a newer World War I monument off 15th.</li>
+                                </ul>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🏢",
+                title: "EISENHOWER EXECUTIVE OFFICE BUILDING",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say (Part 1):</h3>
+                                <ul>
+                                    <li>"The massive building beside us is the Eisenhower Executive Office Building, or EEOB. It houses a majority of offices for White House staff."</li>
+                                    <li>"It was originally built for the State, War, and Navy Departments between 1871 and 1888 and opened in phases — with the State Department moving in first. It was called the SWAN building back then."</li>
+                                    <li>"It was designed by the same architect who did the Treasury Building — Alfred Mullett — but in a completely different style: French Second Empire architecture."</li>
+                                    <li>"It took 17 years to complete and was the largest office building in the world when it opened. It has nearly two miles of hallways."</li>
+                                </ul>
+                            </div>
+                        `
+                    },
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say (Part 2):</h3>
+                                <ul>
+                                    <li>"Public opinion was divided — some people loved it, but many hated it and called it 'the great monstrosity.'"</li>
+                                    <li>"The War Department operated here from 1871 to 1947 and planned all U.S. military conflicts until it was split into the Army and Air Force."</li>
+                                    <li>"The building continued to have a lot of critics, and the 1920s, Congress allocated $3 million to redesign the exterior to match the Treasury's look, but it turned out to be more complicated than they thought and the Great Depression hit and the money was rescinded."</li>
+                                </ul>
+                            </div>
+                        `
+                    },
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say (Part 3):</h3>
+                                <ul>
+                                    <li>"In the 1950s, there was a push to tear it down, but Truman said it was 'the greatest monstrosity in America' and preserved it."</li>
+                                    <li>"Instead of demolishing it, the government built the brick New Executive Office Building by Lafayette Square."</li>
+                                    <li>"In 1949, the building officially turned over to White House staff as the military and State Departments moved into new buildings."</li>
+                                    <li>"The War Department existed for 158 years, from 1789 to 1947. From 1871 to 1947, it operated out of this building and was responsible for planning all U.S. military conflict during that time."</li>
+                                </ul>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🏛️",
+                title: "APPROACHING THE WEST WING",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>As You Get Close to the Entrance, Start Talking About the West Wing:</h3>
+                                <ul>
+                                    <li>"The West Wing was built by Teddy Roosevelt in 1902 because the East Wing was too chaotic with his big family."</li>
+                                    <li>"It was supposed to be temporary — just while he was president — but future presidents liked having work space separate from the residence."</li>
+                                    <li>"Taft expanded it in 1909 and added the first Oval Office."</li>
+                                    <li>"It caught fire on Christmas Eve in 1929 — President Hoover rebuilt it and added air conditioning and a basement."</li>
+                                    <li>"FDR later expanded it again in 1934 to make it like it is today."</li>
+                                    <li>"To the right used to be greenhouses and horse stables — now it's part of the Situation Room that we'll see when we get inside."</li>
+                                </ul>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🏛️",
+                title: "ENTERING THE WEST WING",
+                pages: [
+                    {
+                        content: `
+                            <div class="tips">
+                                <h4>Photo Tip:</h4>
+                                <p>📸 Take a photo of your guests under the canopy with the presidential seal</p>
+                            </div>
+                            <div class="tips">
+                                <h4>Phone Tip:</h4>
+                                <p>📱 Have your guests lock their phones in the secure boxes. You're allowed to keep yours.</p>
+                            </div>
+                            <div class="tips">
+                                <h4>Check-in Tip:</h4>
+                                <p>🛂 Walk into the West Wing and let the security guard know you're there to check in. Sign your name by your group's slot on the clipboard.</p>
+                            </div>
+                            <div class="important-note">
+                                <h4>REMEMBER:</h4>
+                                <p>NO PICTURES UNTIL YOU GET BACK OUTSIDE.</p>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Turn left down the hallway next to the security desk. ➡️ After signing in, turn left and begin the tour down the hallway toward the Vice President's office.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🏛️",
+                title: "VP HALLWAY",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"We'll start by heading left down this hall — the Vice President's working office is at the end."</li>
+                                    <li>"The Vice President has three offices: this one for daily work, a larger one for meetings in the Eisenhower Building, and one in the Senate, where he presides as President of the Senate."</li>
+                                    <li>"The photos you see on the wall are called 'Jumbos.' They're taken by official White House photographers who follow the President and Vice President."</li>
+                                    <li>"These photos are regularly rotated through this hallway and the various office buildings as new ones come in."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Exit the VP hallway, turn left past the security desk, and right at the first hallway.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🚶",
+                title: "IN THE HALLWAY",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"This model here is the USS Constitution — nicknamed 'Old Ironsides.' You can see a cross-section showing how it stayed balanced. The real one is docked in Boston and still open for tours."</li>
+                                    <li>"This area leads to the Navy Mess — the Navy runs all food service in the White House."</li>
+                                    <li>"This gong on the wall was actually used to call sailors to meals aboard the Constitution."</li>
+                                    <li>"And here's a replica of the Lone Sailor statue — the original is in Norfolk, Virginia."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Walk down the stairs and turn right.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🛰️",
+                title: "SITUATION ROOM",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"This is the Situation Room — or 'Sit Room' — and despite the name, it's actually a suite of rooms."</li>
+                                    <li>"After the failed Bay of Pigs invasion, JFK wanted to be sure he could receive intel and securely communicate with American assets anywhere so he built the Situation Room."</li>
+                                    <li>"It's run by the National Security Council (NSC) for monitoring and dealing with crises, as well as conducting secure communications with outside — often overseas — contacts."</li>
+                                    <li>"It includes three conference rooms with state-of-the-art video conferencing capabilities and totals 5,000 square feet in space."</li>
+                                    <li>"The facility runs 24/7 to monitor activity and to handle global events."</li>
+                                    <li>"Fun fact: it was originally the Truman Bowling Alley that is now at the Eisenhower Building!"</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Walk toward the other end of the hallway toward the Navy Mess dining hall stopping in the middle at the Carryout window.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "☕",
+                title: "CARRYOUT WINDOW",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"This is the informal Navy Mess — staff can order food here to-go."</li>
+                                    <li>"There's a Coke machine and coffee available too."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Continue to the Navy Mess and look inside.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🍽️",
+                title: "NAVY MESS",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"The White House Navy Mess was established under President Harry S. Truman in 1951 and continues to be run by Naval Officers."</li>
+                                    <li>"U.S. Navy Stewards have been responsible for Presidential Food Service since 1880."</li>
+                                    <li>"The Navy seal is to the right and on the plates you see."</li>
+                                    <li>"The whole room has a nautical theme, including ship artwork on the walls."</li>
+                                    <li>"This is where senior officials can have a formal lunch or meeting."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>📍 Head back up the stairs past the USS Constitution and turn left back at the main hallway.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🚶",
+                title: "JUMBO HALLWAY",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"Take a look at these Jumbos for some interesting pictures — you might spot one with a license plate that says '45–47' — a nod to Trump being the 45th and 47th president."</li>
+                                    <li>"There are also images from major events, including two showing the rare Capitol Rotunda inauguration."</li>
+                                    <li>"The doors opposite the photos lead to West Wing offices — about 30 staffers work here, often in very small or shared offices."</li>
+                                    <li>"We are in the basement and there are two more floors above us."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Go through the doors and turn left up the stairs. ➡️ At the top of the stairs, turn right at the security desk (don't need to say anything other than being friendly to the Secret Service). As you walk toward the Rose Garden, there are more Jumbos from recent events. The doors will automatically open and you'll walk out onto the colonnade.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🌹",
+                title: "ROSE GARDEN",
+                pages: [
+                    {
+                        content: `
+                            <div class="important-note">
+                                <h4>NOTE:</h4>
+                                <p>"The Rose Garden may be closed right now due to some construction meant to make press conferences safer, as some guests were falling in the grass." If you can continue, follow below. If you can't go right to the Rose Garden, turn left and resume at the HALLWAY BEFORE CABINET ROOM section.</p>
+                            </div>
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"The Rose Garden was first created in 1913 by President Woodrow Wilson's wife, Ellen Wilson."</li>
+                                    <li>"It was remodeled by First Lady Jackie Kennedy and again by First Lady Melania Trump during President Trump's first administration."</li>
+                                    <li>"President Herbert Hoover began the tradition of welcoming and being photographed with prominent citizens here."</li>
+                                    <li>"JFK welcomed the Project Mercury astronauts here."</li>
+                                </ul>
+                            </div>
+                        `
+                    },
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say (continued):</h3>
+                                <ul>
+                                    <li>"Nixon's daughter Tricia was married here in 1971."</li>
+                                    <li>"Obama added soccer goals and a playground for his kids."</li>
+                                    <li>"Trump hosted a state dinner here."</li>
+                                    <li>"Many press conferences are held here."</li>
+                                </ul>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "📏",
+                title: "COLONNADE",
+                pages: [
+                    {
+                        content: `
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"Everything at the White House is geared around the President — including a short commute."</li>
+                                    <li>"The President can walk from the residence down this iconic walkway — seen in photos and TV — to the West Wing, or they can take the interior route we're about to walk."</li>
+                                    <li>"If you lean to the right, you can see the famous Truman Balcony."</li>
+                                    <li>"The Cabinet Room and Oval Office that we're about to see are just around the corner to the right."</li>
+                                    <li>"JFK was famously photographed here. More recently, President Biden and Elon Musk walked this path."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Turn back the way you came and turn left when you reach the security desk.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🏛️",
+                title: "HALLWAY BEFORE CABINET ROOM",
+                pages: [
+                    {
+                        content: `
+                            <div class="important-note">
+                                <h4>NOTE:</h4>
+                                <p>Start here if the Rose Garden is closed for renovations.</p>
+                            </div>
+                            <div class="talking-points">
+                                <h3>What to Say:</h3>
+                                <ul>
+                                    <li>"Look at the Jumbos above the stairs" These are usually from very recent events.</li>
+                                    <li>"Across the hallway are doors to more offices."</li>
+                                </ul>
+                            </div>
+                            <div class="wayfinding">
+                                <h4>Wayfinding:</h4>
+                                <p>➡️ Continue down the hall until you see the Cabinet Room on your left.</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                icon: "🏛trying again
