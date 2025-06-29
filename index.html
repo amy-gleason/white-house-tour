@@ -223,7 +223,76 @@
                 { icon: "🏛️", title: "CABINET ROOM", content: `<div class="talking-points"><h3>What to Say:</h3><ul><li>"This is where the President meets with the Cabinet. You have probably seen it recently on TV as the President has been televising the Cabinet meetings."</li><li>Ask, "Which chair do you think is the President's chair?" Answer - "The President's chair here and in other spaces in the West Wing is about two inches taller than the other chairs and is usually in the center of the table."</li><li>"Seating is arranged based on when each department was established — State, Treasury, Defense, etc. The Cabinet members over the oldest departments sit closest to the President."</li><li>"The Secretary of State's chair is positioned to the President's right, while the Secretary of Defense is on his left."</li><li>"The backs of the chairs have name plates that show who sits there. If someone has served in multiple cabinet roles, they will have multiple name plates."</li><li>"Originally constructed in 1902 as a part of President Roosevelt's renovation, the room's current Georgian Style was designed in 1934."</li><li>"The mahogany center conference table was originally bought by President Richard Nixon."</li><li>"Cabinet chairs can be purchased at the end of the Cabinet member's term."</li></ul></div>` },
                 { icon: "🏛️", title: "OVAL OFFICE - OVERVIEW", content: `<div class="talking-points"><h3>What to Say:</h3><ul><li>"This is the working office of the President."</li><li>"It was first made to be in the Oval shape by Taft in 1909. It was modeled after the Blue Room in the East Wing because Taft thought it would help with room flow."</li><li>"Presidents can customize pretty much all of the room — but three things are fixed: the American flag must be there, there must be a portrait of George Washington, and the desk must face away from the window to show that the leader of the free world isn't afraid to have his back to the window"</li><li>"The rest of the room from the carpet, curtains, paintings, furniture - pretty much everything else can be changed by the president. The rug in here is Reagan's rug."</li></ul></div>` },
                 { icon: "🏛️", title: "OVAL OFFICE - RESOLUTE DESK", content: `<div class="talking-points"><h3>The Resolute Desk:</h3><ul><li>"The Resolute Desk, used by eight presidents, was a gift from Queen Victoria in 1880. The HMS Resolute was a British naval ship that became icebound in the Arctic. American whalers discovered and salvaged the ship, and the U.S. restored and returned it to Britain as a gesture of goodwill."</li><li>"There's a nearly identical twin desk made from the same ship — it's in Buckingham Palace."</li><li>"JFK was the first to use it in the Oval Office in 1961 and most presidents have used it since then. Before it was in the Oval Office, it was also used by other presidents in the residence or Eisenhower building"</li><li>"There are many iconic pictures of the Resolute desk but the one with JFK's kids playing around the desk is one of the most well known."</li><li>"FDR had the front of the desk closed in because he didn't want his wheelchair to be seen as he thought it made him appear weak."</li></ul></div>` },
-                { icon: "🏛️", title: "OVAL OFFICE - DETAILS", content: `<div class="talking-points"><h3>More Details:</h3><ul><li>"The presidential coat of arms was updated by Truman in 1956 to show the eagle facing the olive branch — a symbol of peace."</li><li>"The gold leaf on the walls and in the ceiling and the $100,000 upgrade was added during Trump's presidency — it replaced a simple white inlay."</li><li>"In the ceiling, do you notice anything funny looking about the stars?" - Answer - "The stars are Italian stars and nobody noticed that they had too many points until it was finished. They thought they would just fix it on the next renovation, but you have to remove the ceiling to fix it so it has stayed."</li><li>"There is a box with a button by the phone - each President can program it to what they want to receive. Some choose coffee, but President Trump has it call for Diet Coke."</li><li>"The door to the right leads to the private dining room — famously tied to the Monica Lewinsky story."</li><li>"The World Cup trophy nearby is worth over $20 million."</li><li>"There's also a model of the new Air Force One on the table."</li><li>"The clock on the mantel uses 'IIII' instead of 'IV' — this was something early Americans did to show their independence and to rebel from the roman numeral IV and show it as IIII."</li><li>"Behind the curtain is a rare copy of the Declaration of Independence, added by Trump. It's kept behind the curtain to protect it from light. It is the third copy and the original is in the National Archives"</li><li>"The back of the door looks like the same wallpaper as the walls to make it look like the rest of the walls when the door is closed."</li><li>"Trump used to drag the military flags in here from the Roosevelt Room for pictures — eventually they made replicas just for him to use in the Oval. We will talk more about those flags when we get to the Roosevelt Room."</li><li>Outside the Oval, look up and ask, "Guess how much that eagle weighs?" - wait for answers and don't answer any probing questions. Answer - "It weighs about two pounds. Nancy Reagan was afraid that the original heavy one would fall on someone, so she had it replaced with this one that is made of lightweight wood and painted gold."</li></ul></div>` },
+               Great idea! The Oval Office details section is quite long. Let's split it into two manageable sections.
+Step-by-Step to Split the Oval Office Details
+Step 1: Find the Current Section
+Look for this section:
+javascript
+{ icon: "🏛️", title: "OVAL OFFICE - DETAILS", content: `...` }
+Step 2: Decide How to Split It
+Looking at your content, I'd suggest splitting it like this:
+Part 1 - Room Features:
+Presidential coat of arms
+Gold leaf walls/ceiling
+Italian stars in ceiling
+Diet Coke button
+Private dining room door
+Part 2 - Artifacts & Fun Facts:
+World Cup trophy
+Air Force One model
+Clock with IIII
+Declaration of Independence
+Door wallpaper trick
+Military flags story
+Eagle weight question
+Step 3: Replace the Current Section with Two New Ones
+Remove the current long section and replace it with these two:
+javascript
+{ 
+    icon: "🏛️", 
+    title: "OVAL OFFICE - ROOM FEATURES", 
+    content: `
+        <div class="talking-points">
+            <h3>Room Features:</h3>
+            <ul>
+                <li>"The presidential coat of arms was updated by Truman in 1956 to show the eagle facing the olive branch — a symbol of peace."</li>
+                
+                <li>"The gold leaf on the walls and in the ceiling and the $100,000 upgrade was added during Trump's presidency — it replaced a simple white inlay."</li>
+                
+                <li>"In the ceiling, do you notice anything funny looking about the stars?" - Answer - "The stars are Italian stars and nobody noticed that they had too many points until it was finished. They thought they would just fix it on the next renovation, but you have to remove the ceiling to fix it so it has stayed."</li>
+                
+                <li>"There is a box with a button by the phone - each President can program it to what they want to receive. Some choose coffee, but President Trump has it call for Diet Coke."</li>
+                
+                <li>"The door to the right leads to the private dining room — famously tied to the Monica Lewinsky story."</li>
+            </ul>
+        </div>
+    ` 
+},
+
+{ 
+    icon: "🏛️", 
+    title: "OVAL OFFICE - ARTIFACTS & FUN FACTS", 
+    content: `
+        <div class="talking-points">
+            <h3>Artifacts & Fun Facts:</h3>
+            <ul>
+                <li>"The World Cup trophy nearby is worth over $20 million."</li>
+                
+                <li>"There's also a model of the new Air Force One on the table."</li>
+                
+                <li>"The clock on the mantel uses 'IIII' instead of 'IV' — this was something early Americans did to show their independence and to rebel from the roman numeral IV and show it as IIII."</li>
+                
+                <li>"Behind the curtain is a rare copy of the Declaration of Independence, added by Trump. It's kept behind the curtain to protect it from light. It is the third copy and the original is in the National Archives"</li>
+                
+                <li>"The back of the door looks like the same wallpaper as the walls to make it look like the rest of the walls when the door is closed."</li>
+                
+                <li>"Trump used to drag the military flags in here from the Roosevelt Room for pictures — eventually they made replicas just for him to use in the Oval. We will talk more about those flags when we get to the Roosevelt Room."</li>
+                
+                <li>Outside the Oval, look up and ask, "Guess how much that eagle weighs?" - wait for answers and don't answer any probing questions. Answer - "It weighs about two pounds. Nancy Reagan was afraid that the original heavy one would fall on someone, so she had it replaced with this one that is made of lightweight wood and painted gold."</li>
+            </ul>
+        </div>
+    ` 
+},
                 { icon: "🏛️", title: "ROOSEVELT ROOM", content: `<div class="talking-points"><h3>What to Say:</h3><ul><li>"This is a meeting room named in honor of both Roosevelts because Teddy created the first West Wing and Franklin made it into what it is today."</li><li>"It was previously known as the 'Fish Room' because of various aquariums and fishing mementos that were in the room and on the wall."</li><li>"President John F. Kennedy once hung a large mounted sailfish he had caught in Acapulco, Mexico in this room."</li><li>"Presidents use this room for more informal or roundtable meetings."</li><li>"There are portraits of both Roosevelts — the one over the fireplace changes based on the president's preference."</li><li>"Teddy Roosevelt's Medal of Honor and Nobel Peace Prize are displayed here — sometimes easier to see from one side of the room than the other."</li></ul></div>` },
                 { icon: "🏛️", title: "OTHER SIDE OF ROOSEVELT ROOM", content: `<div class="talking-points"><h3>What to Say:</h3><ul><li>"From this side, you can get a better view of Teddy Roosevelt's Medal of Honor (blue) and Nobel Peace Prize (gold)."</li><li>"Look at the painting of Teddy Roosevelt above the fireplace — each president can choose which Roosevelt portrait to display."</li><li>"The skylight above isn't real — it's an architectural trick to make the room feel brighter."</li><li>"Around the top of the room are military flags from each branch of the Armed Forces. The ribbons attached to each flag represent battles won."</li><li>"Yes, even the Space Force flag has ribbons — satellites qualify when they've helped support a military operation."</li></ul></div>` },
                 { icon: "🏛️", title: "WEST WING MAIN LOBBY", content: `<div class="talking-points"><h3>What to Say:</h3><ul><li>"This is the waiting area for official visitors meeting with the President."</li><li>"Once the President is ready, guests are escorted to the Cabinet Room, Roosevelt Room, or Oval Office."</li><li>"There's a painting to the left that was painted by a boy who inserted himself as an adult — he's the man in the top hat."</li><li>"The large cabinet in the center is one of the oldest pieces in the White House — it survived both the East Wing fire because it was out for repair and the West Wing fire because the Christmas tree was in its place and it was in storage."</li><li>"Inside it is Martha Washington's china. One plate has a typo: 'Kentucky' is spelled with two Ns."</li><li>"The leather-bound books nearby are presidential records. They used to be printed and were fairly small— now they have so much information because they include all digital records like emails, memos, even Slack messages."</li><li>"The landscape past the cabinet is Donner Pass."</li><li>"Across from it is a painting from the Battle of the Potomac (1861)."</li><li>"Another painting shows ships from the War of 1812. One version of the story says the Americans mistook a British warship for an easy target — but it was fully armed and forced the U.S. ships to retreat. Churchill supposedly gifted the painting to the White House to balance out all the victorious imagery."</li><li>"Rumor has it that painting won't stay up on any other wall but this one."</li></ul></div>` },
