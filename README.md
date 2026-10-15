@@ -6,6 +6,18 @@ Live app: https://amy-gleason.github.io/white-house-tour/
 
 **You don't need to know any code to update a tour.** Every tour is a plain text file in the [`tours`](tours) folder. Edit the file and the app updates itself.
 
+## Before you start: get edit access
+
+You need a free GitHub account and permission to edit this project.
+
+1. Make a GitHub account at https://github.com/signup if you don't have one.
+2. Send your GitHub username to the tour app owner (Amy).
+3. You'll get an email invitation. Click **Accept invitation**.
+
+How to tell it worked: when you click the pencil on a tour file, the green button at the top says **Commit changes**. If it says **Propose changes** instead, your invitation hasn't been accepted yet. Don't continue, or your edit will end up in a separate copy that the app never sees.
+
+*For the owner:* add people under **Settings > Collaborators > Add people**.
+
 ## Edit a talking point
 
 1. Open the [`tours`](tours) folder and click the tour you want, like `west-wing.md`.
@@ -14,6 +26,12 @@ Live app: https://amy-gleason.github.io/white-house-tour/
 4. Click **Commit changes** at the top, then **Commit changes** again in the pop-up.
 
 The live app updates in a minute or two. Refresh the page on your phone to see it.
+
+**Heads up: your change goes live for every guide.** There's no review step. Reread your edit before you click Commit.
+
+**Made a mistake?** Nothing is ever lost. Open the file and click **History** (top right). Find the version from before your change and click its **<>** button to see the project as it was then. Open the same tour file, copy the text you need, and paste it back in with the pencil. Or just ask Amy to roll it back.
+
+**Tip:** When you're just reading a tour file, GitHub shows it nicely formatted, with big headings and bullet points. Clicking the pencil shows the plain text with the `#` and `-` symbols. Both are the same file.
 
 ## How a tour file is laid out
 
@@ -47,6 +65,10 @@ The rules:
 | `<!-- note to self -->` | A hidden comment. Guides never see it. |
 
 The box color comes from the **first emoji** of the `###` line. So `### 💡 Photo Tip:` and `### 💡 Phone Tip:` are both yellow.
+
+Stop names are in ALL CAPS to match the rest of the app. That's just a convention. Lowercase works too.
+
+**Typing emojis:** the easiest way is to copy one from another stop and paste it. You can also open the emoji picker. On Windows, press **Windows key + period**. On a Mac, press **Control + Command + Space**. If you leave the emoji off a stop, the app shows a 📍 pin instead.
 
 ## Add a stop
 
